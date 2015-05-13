@@ -22,11 +22,11 @@ namespace AppiumTest
        {
            DesiredCapabilities capabilites = new DesiredCapabilities();
            capabilites.SetCapability("device", "Android");
-           capabilites.SetCapability("browserName", "chrome");
-           capabilites.SetCapability("deviceName", "SM-T310");
+           capabilites.SetCapability("browserName", "Firefox");
+           capabilites.SetCapability("deviceName", "Samsung");
            capabilites.SetCapability("platformName", "Android");
            capabilites.SetCapability("platformVersion", "4.2.2");
-           driver = new RemoteWebDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(180));
+           driver = new RemoteWebDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(80));
        }
 
       public void OpenHofHomePage()
