@@ -22,10 +22,11 @@ namespace AppiumTest
        {
            DesiredCapabilities capabilites = new DesiredCapabilities();
            capabilites.SetCapability("device", "Android");
-           capabilites.SetCapability("browserName", "Firefox");
-           capabilites.SetCapability("deviceName", "Samsung");
+           capabilites.SetCapability("browserName", "chrome");
+           capabilites.SetCapability("deviceName", "HTC One mini 2");
            capabilites.SetCapability("platformName", "Android");
            capabilites.SetCapability("platformVersion", "4.2.2");
+
            driver = new RemoteWebDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(80));
        }
 
