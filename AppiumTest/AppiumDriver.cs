@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,20 +22,19 @@ namespace AppiumTest
       public IWebDriver driver;
        public void Setup()
        {
+           string app = "c:\\Users\\Userrr\\Downloads\\WhatsApp2.12.88.apk"; //WhatsApp2.12.88.apk
            DesiredCapabilities capabilites = new DesiredCapabilities();
-           capabilites.SetCapability("device", "Android");
-           //capabilites.SetCapability("browserName", "chrome");
-           capabilites.SetCapability("appPackage", "com.ansroid.chrome");
-           capabilites.SetCapability("appActivity", "com.ansroid.chrome");
+           capabilites.SetCapability("device", "Android");          
            capabilites.SetCapability("deviceName", "HTC One mini 2");
            capabilites.SetCapability("platformName", "Android");
            capabilites.SetCapability("platformVersion", "4.2.2");
+           capabilites.SetCapability("app", Path.GetFullPath(app));        
 
-           driver = new AndroidDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites);
+           driver = new RemoteWebDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(180));
        }
 
       public void OpenHofHomePage()
-       {
+       {         
           driver.Navigate().GoToUrl("http://putlocker.is");
           Thread.Sleep(10000);
           try
