@@ -22,31 +22,25 @@ namespace AppiumTest
       public IWebDriver driver;
        public void Setup()
        {
-           string app = "c:\\Users\\Userrr\\Downloads\\WhatsApp2.12.88.apk"; //WhatsApp2.12.88.apk
            DesiredCapabilities capabilites = new DesiredCapabilities();
            capabilites.SetCapability("device", "Android");          
            capabilites.SetCapability("deviceName", "HTC One mini 2");
-           capabilites.SetCapability("platformName", "Android");
-           capabilites.SetCapability("platformVersion", "4.2.2");
-           capabilites.SetCapability("app", Path.GetFullPath(app));        
-
-           driver = new RemoteWebDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(180));
+           driver = new AndroidDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(380));
        }
 
       public void OpenHofHomePage()
-       {         
-          driver.Navigate().GoToUrl("http://putlocker.is");
-          Thread.Sleep(10000);
-          try
-          {
-              if (driver.SwitchTo().Alert().Text == "http://putlocker.is")
-                  driver.SwitchTo().Alert().Dismiss();
-          }
-          catch (Exception e)
-          {
-              Console.WriteLine(e);              
-          }
-          
+       {
+           IWebElement qStr = driver.FindElement(By.Id("org.mozilla.firefox_beta:id/address_bar_bg"));
+           qStr.Click();
+           qStr.Click();
+           qStr.SendKeys("http://putlocker.is");
+           IWebElement qButton = driver.FindElement(By.Id("org.mozilla.firefox_beta:id/awesomebar_button"));
+           qButton.Click();
+           //driver.SwitchTo().Alert().Dismiss();
+           driver.SwitchTo().ActiveElement().Click();
+
+          //driver.Navigate().GoToUrl("http://putlocker.is");
+          //Console.WriteLine(" " + driver.Url.ToString());       
        }
       public void CloseDriver()
       {
