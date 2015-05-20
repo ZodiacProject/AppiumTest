@@ -30,11 +30,11 @@ namespace AppiumTest
 
       public void OpenHofHomePage()
        {
-           IWebElement qStr = driver.FindElement(By.Id("org.mozilla.firefox_beta:id/address_bar_bg"));
+           IWebElement qStr = driver.FindElement(By.Id("org.mozilla.firefox:id/address_bar_bg"));
            qStr.Click();
            qStr.Click();
            qStr.SendKeys("http://putlocker.is");
-           IWebElement qButton = driver.FindElement(By.Id("org.mozilla.firefox_beta:id/awesomebar_button"));
+           IWebElement qButton = driver.FindElement(By.Id("org.mozilla.firefox:id/awesomebar_button"));
            qButton.Click();
            //driver.SwitchTo().Alert().Dismiss();
            driver.SwitchTo().ActiveElement().Click();
