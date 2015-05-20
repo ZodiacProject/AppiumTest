@@ -52,3 +52,5 @@ C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\Selenium.WebDriverBackedSelen
 C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\ThoughtWorks.Selenium.Core.xml
 C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\WebDriver.xml
 C:\GitHub\Projects\AppiumTest\AppiumTest\obj\Debug\AppiumTest.csprojResolveAssemblyReference.cache
+C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\nunit.framework.dll
+C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\nunit.framework.xml
