@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Interfaces;
@@ -22,30 +23,26 @@ namespace AppiumTest
       public IWebDriver driver;
        public void Setup()
        {
+//**
+// Browsers 
+// org.mozilla.firefox, appActivity App
+// com.opera.browser, appActivity com.opera.Opera 
+//**          
            DesiredCapabilities capabilites = new DesiredCapabilities();
            capabilites.SetCapability("device", "Android");          
-           capabilites.SetCapability("deviceName", "HTC One mini 2");
-           driver = new AndroidDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(380));
+           capabilites.SetCapability("deviceName", "Nexus 7");
+           capabilites.SetCapability(CapabilityType.BrowserName, "opera");
+           capabilites.SetCapability("platformName", "Android");
+           capabilites.SetCapability("platformVersion", "4.2.2");
+           capabilites.SetCapability("appPackage", "com.opera.browser");
+           capabilites.SetCapability("appActivity", "com.opera.Opera");
+           driver = new AndroidDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(1000));
        }
 
       public void OpenHofHomePage()
        {
-           IWebElement qStr = driver.FindElement(By.Id("org.mozilla.firefox:id/address_bar_bg"));
-           qStr.Click();
-           qStr.Click();
-           qStr.SendKeys("http://putlocker.is");
-           IWebElement qButton = driver.FindElement(By.Id("org.mozilla.firefox:id/awesomebar_button"));
-           qButton.Click();
-           //driver.SwitchTo().Alert().Dismiss();
-           driver.SwitchTo().ActiveElement().Click();
 
-          //driver.Navigate().GoToUrl("http://putlocker.is");
-          //Console.WriteLine(" " + driver.Url.ToString());       
        }
-      public void CloseDriver()
-      {
-          driver.Quit();
-      }
       
     }
 }
