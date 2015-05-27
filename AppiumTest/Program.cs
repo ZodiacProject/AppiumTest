@@ -13,7 +13,7 @@ namespace AppiumTest
             Console.WriteLine("Запуск теста...");
             AppiumDriver driver = new AppiumDriver();
             driver.Setup();
-            //driver.OpenHofHomePage();
+            driver.OpenHofHomePage();
             Console.WriteLine("Тест выполнился!");
 
         }
