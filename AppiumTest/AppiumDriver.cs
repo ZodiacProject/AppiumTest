@@ -37,8 +37,8 @@ namespace AppiumTest
            capabilites.SetCapability(CapabilityType.BrowserName, "firefox");
            capabilites.SetCapability("platformName", "Android");
            capabilites.SetCapability("platformVersion", "4.2.2");
-           capabilites.SetCapability("appPackage", "org.mozilla.firefox");
-           capabilites.SetCapability("appActivity", "App");
+           capabilites.SetCapability("appPackage", "com.android.chrome");
+           capabilites.SetCapability("appActivity", "com.google.android.apps.chrome.Main");
            driver = new AndroidDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(180));
        }
 
@@ -46,26 +46,9 @@ namespace AppiumTest
        {
          //  FileStream file = new FileStream ("C:\\pageSource.txt", FileMode.Open, FileAccess.ReadWrite);
          //  StreamWriter writer = new StreamWriter(file);
-       //  driver.Navigate().GoToUrl("http://putlocker.is");
-       //   driver.ResetApp();
-           int onclickScore = 3;
-          IWebElement urlTitle = driver.FindElement(By.Id("org.mozilla.firefox:id/url_bar_entry"));
-          while (onclickScore != 0)
-          {
-              urlTitle.Click();
-              urlTitle.SendKeys("http://putlocker.is");
-              driver.KeyEvent(AndroidKeyCode.Enter);
-              Thread.Sleep(5000);
-              driver.FindElementById("android:id/windowContentFrame").Click();
-              driver.BackgroundApp(1);
-              onclickScore--;
-          }
-          
-          //js.ExecuteScript("$('#route').click()");
-         // document.getElementById("route").click();
-              //driver.FindElement(By.Id("org.mozilla.firefox:id/suggestions_prompt_yes")).Click();
-        
-          //IWebElement elPushup = driver.FindElement(By.XPath("//a"));
+         driver.Navigate().GoToUrl("http://putlocker.is");
+         driver.SwitchTo().ActiveElement().Click();
+       }
        
        }
       
