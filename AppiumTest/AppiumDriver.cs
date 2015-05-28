@@ -23,6 +23,7 @@ namespace AppiumTest
   public class AppiumDriver
     {
       public AndroidDriver driver;
+            
        public void Setup()
        {
 //**
@@ -34,7 +35,7 @@ namespace AppiumTest
            DesiredCapabilities capabilites = new DesiredCapabilities();
            capabilites.SetCapability("device", "Android");          
            capabilites.SetCapability("deviceName", "Nexus 7");
-           capabilites.SetCapability(CapabilityType.BrowserName, "firefox");
+           capabilites.SetCapability(CapabilityType.BrowserName, "chrome");
            capabilites.SetCapability("platformName", "Android");
            capabilites.SetCapability("platformVersion", "4.2.2");
            capabilites.SetCapability("appPackage", "com.android.chrome");
@@ -46,11 +47,45 @@ namespace AppiumTest
        {
          //  FileStream file = new FileStream ("C:\\pageSource.txt", FileMode.Open, FileAccess.ReadWrite);
          //  StreamWriter writer = new StreamWriter(file);
-         driver.Navigate().GoToUrl("http://putlocker.is");
-         driver.SwitchTo().ActiveElement().Click();
+          int windowScore = 3;
+          int Impressions = 0;
+           driver.Navigate().GoToUrl("http://www13.zippyshare.com/v/94311818/file.html");
+           string baseWindow = driver.CurrentWindowHandle;
+         //Console.WriteLine(driver.WindowHandles.Count);
+         //driver.SwitchTo().ActiveElement().Click();
+          try
+          {
+           while (windowScore > 0)
+           {
+               driver.SwitchTo().ActiveElement().Click();
+               Thread.Sleep(5000);
+               if ((driver.WindowHandles.Count) > 1)
+                   Impressions++;
+                driver.SwitchTo().Alert().Accept(); 
+               
+                    
+               IReadOnlyCollection<string> windows = driver.WindowHandles;
+               foreach (string window in windows)
+               {
+                   if (baseWindow != window)
+                       driver.Close();
+               }
+               Console.WriteLine(windowScore);
+               windowScore--;
+               driver.SwitchTo().Window(baseWindow);
+               Thread.Sleep(45000);
+           }
+          }
+          catch { }
+        // driver.FindElementByXPath("/html/body/iframe");
+         //Console.WriteLine(driver.FindElementByXPath("/html/body/iframe").Text);
+         Console.WriteLine("Impressions " + Impressions);
+         //Thread.Sleep(3000);
+         // driver.SwitchTo().Alert().Accept();
+      
        }
        
        }
       
-    }
 }
+
