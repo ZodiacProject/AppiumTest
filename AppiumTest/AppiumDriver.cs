@@ -44,48 +44,32 @@ namespace AppiumTest
        }
 
       public void OpenHofHomePage()
-       {
-         //  FileStream file = new FileStream ("C:\\pageSource.txt", FileMode.Open, FileAccess.ReadWrite);
-         //  StreamWriter writer = new StreamWriter(file);
-          int windowScore = 3;
+       {        
+          int windowScore = 2;
           int Impressions = 0;
            driver.Navigate().GoToUrl("http://www13.zippyshare.com/v/94311818/file.html");
-           string baseWindow = driver.CurrentWindowHandle;
-         //Console.WriteLine(driver.WindowHandles.Count);
-         //driver.SwitchTo().ActiveElement().Click();
-          try
-          {
-           while (windowScore > 0)
+           while (windowScore != 0)
            {
                driver.SwitchTo().ActiveElement().Click();
                Thread.Sleep(5000);
                if ((driver.WindowHandles.Count) > 1)
                    Impressions++;
-                driver.SwitchTo().Alert().Accept(); 
-               
-                    
+               try { driver.SwitchTo().Alert().Accept(); }
+               catch { }
                IReadOnlyCollection<string> windows = driver.WindowHandles;
                foreach (string window in windows)
-               {
-                   if (baseWindow != window)
-                       driver.Close();
-               }
-               Console.WriteLine(windowScore);
+                   {
+                       if (window == windows.ElementAt(0))
+                           driver.Close();
+                   }
                windowScore--;
-               driver.SwitchTo().Window(baseWindow);
+               driver.SwitchTo().Window(windows.ElementAt(1));
                Thread.Sleep(45000);
            }
-          }
-          catch { }
-        // driver.FindElementByXPath("/html/body/iframe");
-         //Console.WriteLine(driver.FindElementByXPath("/html/body/iframe").Text);
-         Console.WriteLine("Impressions " + Impressions);
-         //Thread.Sleep(3000);
-         // driver.SwitchTo().Alert().Accept();
-      
+         Console.WriteLine("<Impressions> " + Impressions);
        }
        
-       }
+    }
       
 }
 
