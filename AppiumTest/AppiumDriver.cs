@@ -45,25 +45,27 @@ namespace AppiumTest
 
       public void OpenHofHomePage()
        {        
-          int windowScore = 2;
+          int windowScore = 3;
           int Impressions = 0;
-           driver.Navigate().GoToUrl("http://www13.zippyshare.com/v/94311818/file.html");
+          driver.Navigate().GoToUrl("http://thevideos.tv"); // http://www13.zippyshare.com/v/94311818/file.html
+          driver.FindElementByClassName("morevids").Click();
            while (windowScore != 0)
-           {
+           {              
                driver.SwitchTo().ActiveElement().Click();
                Thread.Sleep(5000);
                if ((driver.WindowHandles.Count) > 1)
                    Impressions++;
-               try { driver.SwitchTo().Alert().Accept(); }
-               catch { }
                IReadOnlyCollection<string> windows = driver.WindowHandles;
                foreach (string window in windows)
                    {
-                       if (window == windows.ElementAt(0))
+                       if (window != windows.ElementAt(0))
+                       {
+                           driver.SwitchTo().Window(window);
                            driver.Close();
+                       }
                    }
                windowScore--;
-               driver.SwitchTo().Window(windows.ElementAt(1));
+               driver.SwitchTo().Window(windows.ElementAt(0));
                Thread.Sleep(45000);
            }
          Console.WriteLine("<Impressions> " + Impressions);
