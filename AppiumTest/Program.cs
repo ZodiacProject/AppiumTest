@@ -10,10 +10,14 @@ namespace AppiumTest
     {
         static void Main(string[] args)
         {
+            Console.Write("Windows score ");
+            int WindowScore = int.Parse(Console.ReadLine());
+            Console.Write("The duration of the show ");
+            int TimeShow = 1000 * (int.Parse(Console.ReadLine()));
             Console.WriteLine("Запуск теста...");
             AppiumDriver driver = new AppiumDriver();
             driver.Setup();
-            driver.OpenHofHomePage();
+            driver.OpenHofHomePage(WindowScore, TimeShow);
             Console.WriteLine("Тест выполнился!");
 
         }

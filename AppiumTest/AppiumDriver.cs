@@ -13,7 +13,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Interfaces;
 using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Interactions.Internal;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Appium.Android;
 
@@ -23,7 +23,7 @@ namespace AppiumTest
   public class AppiumDriver
     {
       public AndroidDriver driver;
-            
+      private bool _isLandChecked = true;      
        public void Setup()
        {
 //**
@@ -43,18 +43,43 @@ namespace AppiumTest
            driver = new AndroidDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(180));
        }
 
-      public void OpenHofHomePage()
-       {        
-          int windowScore = 3;
-          int Impressions = 0;
-          driver.Navigate().GoToUrl("http://thevideos.tv"); // http://www13.zippyshare.com/v/94311818/file.html
-          driver.FindElementByClassName("morevids").Click();
-           while (windowScore != 0)
-           {              
-               driver.SwitchTo().ActiveElement().Click();
+      public void OpenHofHomePage(int WindowScore, int TimeShow)
+       {        // 		Context	"WEBVIEW_1"	string
+          int windowScore = WindowScore;
+          int impressions = 0;
+          string url1 = "http://putlocker.is/";//"http://49.ppsite.org/index.php";//"http://www13.zippyshare.com/v/94311818/file.html";
+          string url2 = "http://thevideos.tv";
+          ITouchAction tapScreen = new TouchAction(driver);
+          string basicWindow = driver.CurrentWindowHandle;
+          driver.Navigate().GoToUrl(url1);
+        //  driver.FindElementByClassName("morevids").Click();
+        //  url2 = driver.Url;       
+         // IWebElement el = driver.FindElements(By.XPath("/html/body/iframe"));
+          while (windowScore != 0)
+           {
                Thread.Sleep(5000);
-               if ((driver.WindowHandles.Count) > 1)
-                   Impressions++;
+             //  Console.WriteLine(driver.SwitchTo().Frame(1).PageSource);
+             //  return;
+               if (driver.SwitchTo().Frame(1).PageSource.Contains("Cancel"))
+               {
+                   Thread.Sleep(1000);
+                   driver.FindElementByXPath("//*[@id='B1']").Click();                  
+                   Thread.Sleep(1000);
+               }
+               //if (driver.Url != url1)
+               //{   
+               //    driver.Navigate().GoToUrl(url1);
+               //    tapScreen.Tap(10, 10, null);
+               //}
+               driver.SwitchTo().ActiveElement().Click();
+               try
+               {
+                   driver.SwitchTo().Alert().Accept();
+               }
+               catch {}
+               if ((driver.WindowHandles.Count) > 1 || (driver.Url != url1))
+                   impressions++;
+
                IReadOnlyCollection<string> windows = driver.WindowHandles;
                foreach (string window in windows)
                    {
@@ -66,9 +91,9 @@ namespace AppiumTest
                    }
                windowScore--;
                driver.SwitchTo().Window(windows.ElementAt(0));
-               Thread.Sleep(45000);
+               Thread.Sleep(TimeShow);
            }
-         Console.WriteLine("<Impressions> " + Impressions);
+         Console.WriteLine("<Impressions> " + impressions);
        }
        
     }
