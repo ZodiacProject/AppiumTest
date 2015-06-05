@@ -52,3 +52,10 @@ C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\Selenium.WebDriverBackedSelen
 C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\ThoughtWorks.Selenium.Core.xml
 C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\WebDriver.xml
 C:\GitHub\Projects\AppiumTest\AppiumTest\obj\Debug\AppiumTest.csprojResolveAssemblyReference.cache
+C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\Gurock.TestRail.dll
+C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\NuLog.dll
+C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\TestRail.dll
+C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\WebDriver.Support.dll
+C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\Gurock.TestRail.pdb
+C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\TestRail.pdb
+C:\GitHub\Projects\AppiumTest\AppiumTest\bin\Debug\WebDriver.Support.xml

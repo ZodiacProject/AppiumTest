@@ -35,7 +35,10 @@
     <Reference Include="appium-dotnet-driver">
       <HintPath>..\packages\Appium.WebDriver.1.2.0.8\lib\net40\appium-dotnet-driver.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Gurock.TestRail">
+      <HintPath>testrail-api-master\testrail-api-master\dotnet\bin\Debug\Gurock.TestRail.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -45,6 +48,9 @@
     <Reference Include="NuGet.Core, Version=2.8.60318.667, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NuGet.Core.2.8.5\lib\net40-Client\NuGet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NuLog">
+      <HintPath>..\packages\NuLog.1.0.3\lib\NuLog.dll</HintPath>
     </Reference>
     <Reference Include="Selenium.WebDriverBackedSelenium, Version=2.45.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -59,6 +65,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TestRail">
+      <HintPath>..\packages\TestRail.1.0.0.8\lib\net45\TestRail.dll</HintPath>
+    </Reference>
     <Reference Include="ThoughtWorks.Selenium.Core, Version=2.45.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Selenium.RC.2.45.0\lib\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
@@ -66,18 +75,23 @@
     <Reference Include="WebDriver">
       <HintPath>..\packages\Selenium.WebDriver.2.45.0\lib\net40\WebDriver.dll</HintPath>
     </Reference>
+    <Reference Include="WebDriver.Support">
+      <HintPath>..\packages\Selenium.Support.2.45.0\lib\net40\WebDriver.Support.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppiumDriver.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\APIClient.cs" />
+    <Compile Include="Properties\APIException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublisherTarget.cs" />
+    <Compile Include="TestRail.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="NuLog.json" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
