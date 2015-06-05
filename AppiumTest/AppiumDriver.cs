@@ -23,27 +23,24 @@ namespace AppiumTest
 
   public class AppiumDriver
     {
-      private AndroidDriver driver;
-      private List<PublisherTarget> _driverSettings; // for many publishers
+      private AndroidDriver _driver;
+      private PublisherTarget _publisher;
+      private List<PublisherTarget> _driverSettings = new List<PublisherTarget>();
       private bool _isLandChecked;
       private bool _isOnClick;
       private int _countWindowClick = 0;
 
       public List<AndroidDriver> Drivers { get; private set; }
-     // public TestRail TestRun { get; set; }
+      private string _typeTest; 
     
 //Constuctor
-       public AppiumDriver()
+       public AppiumDriver(string TypeTest)
         {
 			Drivers = new List<AndroidDriver>();
-           _driverSettings = new List<PublisherTarget>()
-                {
-                //new PublisherTarget() { Url = "http://putlocker.is", ZoneId = "10802", CountShowPopup = 3, IntervalPopup = 10000, StepCase = 0},
-                //new PublisherTarget() { Url = "http://thevideos.tv/", ZoneId = "90446", CountShowPopup = 3, IntervalPopup = 45000, TargetClick = "morevids", StepCase = 1},              
-                //new PublisherTarget() { Url = "http://www13.zippyshare.com/v/94311818/file.html/", ZoneId = "180376", CountShowPopup = 2, IntervalPopup = 45000, StepCase = 2},
-                //new PublisherTarget() { Url = "http://um-fabolous.blogspot.ru/", ZoneId = "199287", CountShowPopup = 3, IntervalPopup = 45000, StepCase = 3},                
-                new PublisherTarget() {Url = "http://www.flashx.tv/&?", ZoneId = "119133", CountShowPopup = 1, IntervalPopup = 20000, StepCase = 4},              
-                };
+            _publisher = new PublisherTarget();
+            _driverSettings = _publisher.GetDriverSettings(_typeTest = TypeTest);
+            //foreach (var c in _driverSettings)
+            //    Console.WriteLine(c.Url);
         }
        public void Setup()
        {
@@ -61,17 +58,17 @@ namespace AppiumTest
            capabilites.SetCapability("platformVersion", "4.2.2");
            capabilites.SetCapability("appPackage", "com.android.chrome");
            capabilites.SetCapability("appActivity", "com.google.android.apps.chrome.Main");
-           driver = new AndroidDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(180));
+           _driver = new AndroidDriver(new Uri("http://127.0.0.1:4723/wd/hub"), capabilites, TimeSpan.FromSeconds(180));
        }
 
        public void StartOnclick()
        {
-           ITouchAction tapScreen = new TouchAction(driver);
+           //ITouchAction tapScreen = new TouchAction(driver);
            TestRail TestRun = new TestRail();
            TestRun.StartTestRail();
            List<string> CaseToRun = new List<string>();
 
-           foreach (string runCase in TestRun.GetRunCase(driver))
+           foreach (string runCase in TestRun.GetRunCase(_driver))
                CaseToRun.Add(runCase);
 
            //foreach (string c in CaseToRun)
@@ -83,63 +80,63 @@ namespace AppiumTest
            string commentMessage = "";
            foreach (PublisherTarget driverSet in _driverSettings)
            {
-               driver.Navigate().GoToUrl(driverSet.Url);
+               _driver.Navigate().GoToUrl(driverSet.Url);
 
                int failedLand = 0;
                // Проверка на наш Landing
-               if (driver.Url != "http://thevideos.tv/")
+               if (_driver.Url != "http://thevideos.tv/")
                {
-                   if (driver.PageSource.Contains(driverSet.ZoneId))
+                   if (_driver.PageSource.Contains(driverSet.ZoneId))
                        _isLandChecked = true;
                    else
                        _isLandChecked = false;
                }
                else
                {
-                   driver.FindElement(By.ClassName(driverSet.TargetClick)).Click();
+                   _driver.FindElement(By.ClassName(driverSet.TargetClick)).Click();
                    Thread.Sleep(3000);
-                   if (driver.PageSource.Contains(driverSet.ZoneId))
+                   if (_driver.PageSource.Contains(driverSet.ZoneId))
                        _isLandChecked = true;
                    else
                        _isLandChecked = false;
                }
 
-               string baseWindow = driver.CurrentWindowHandle;
+               string baseWindow = _driver.CurrentWindowHandle;
 
                while (driverSet.CountShowPopup != 0)
                {
-                   if (driver.Url != driverSet.Url)
+                   if (_driver.Url != driverSet.Url)
                    {
-                       driver.Navigate().GoToUrl(driverSet.Url);
+                       _driver.Navigate().GoToUrl(driverSet.Url);
                       // tapScreen.Tap(10, 10, null);
                    }
-                   if (driver.Url != "http://thevideos.tv/")
+                   if (_driver.Url != "http://thevideos.tv/")
                        Thread.Sleep(2000);
                    try
                    {
-                       if (driver.SwitchTo().Frame(1).PageSource.Contains("Cancel"))
+                       if (_driver.SwitchTo().Frame(1).PageSource.Contains("Cancel"))
                        {
                            Thread.Sleep(1000);
-                           driver.FindElementByXPath("//*[@id='B1']").Click();
+                           _driver.FindElementByXPath("//*[@id='B1']").Click();
                            Thread.Sleep(1000);
                        }
                    }
                    catch { Console.WriteLine("Pushup been on site"); }
 
-                   driver.SwitchTo().Window(driver.WindowHandles.ElementAt(0)).SwitchTo().ActiveElement().Click();
+                   _driver.SwitchTo().Window(_driver.WindowHandles.ElementAt(0)).SwitchTo().ActiveElement().Click();
                    Thread.Sleep(3000);
                    //*
-                   try { driver.SwitchTo().Alert().Accept(); }
+                   try { _driver.SwitchTo().Alert().Accept(); }
                    catch { }
                    //*
                    if (_isLandChecked)
                    {
-                       OnclickProgress(driver, driverSet);
+                       OnclickProgress(_driver, driverSet);
                        if (!_isOnClick)
                        {
                            errorMessage = "Во время клика не отработал показ. На сайте присутствует наш Network";
                            commentMessage = "OnClick не отработал";
-                           Console.Error.WriteLine(driver.SwitchTo().Window(baseWindow).Url + " OnClick is " + _isOnClick);
+                           Console.Error.WriteLine(_driver.SwitchTo().Window(baseWindow).Url + " OnClick is " + _isOnClick);
                            TestRun.SetStatus(CaseToRun[driverSet.StepCase], 5, errorMessage, commentMessage);
                            break;
                        }
@@ -148,7 +145,7 @@ namespace AppiumTest
                    {
                        errorMessage = "FailedLand: " + failedLand + "\nLanding is " + _isLandChecked;
                        commentMessage = "Landing is " + _isLandChecked;
-                       Console.Error.WriteLine(driver.SwitchTo().Window(baseWindow).Url + errorMessage);
+                       Console.Error.WriteLine(_driver.SwitchTo().Window(baseWindow).Url + errorMessage);
                        TestRun.SetStatus(CaseToRun[driverSet.StepCase], 5, errorMessage, commentMessage);
                        break;
                    }
@@ -157,14 +154,14 @@ namespace AppiumTest
                // Проверка на открытие после того, как все показы уже были
                try
                {
-                   driver.SwitchTo().Window(driver.WindowHandles.ElementAt(0)).SwitchTo().ActiveElement().Click();
+                   _driver.SwitchTo().Window(_driver.WindowHandles.ElementAt(0)).SwitchTo().ActiveElement().Click();
                }
                catch { }
 
-               _countWindowClick = driver.WindowHandles.Count;
+               _countWindowClick = _driver.WindowHandles.Count;
                if (_countWindowClick == 1 && driverSet.CountShowPopup == 0)
                {
-                   successMessage = driver.Url + "\nLanding is - " + _isLandChecked;
+                   successMessage = _driver.Url + "\nLanding is - " + _isLandChecked;
                    Console.WriteLine(successMessage + " " + _isLandChecked + " " + _isOnClick);
                    TestRun.SetStatus(CaseToRun[driverSet.StepCase], 1, successMessage, null);
                }
@@ -172,7 +169,7 @@ namespace AppiumTest
                else if (_isLandChecked && _isOnClick)
                {
                    retestMessage = "Landing is " + _isLandChecked + " "
-                       + driver.Url + " OnClick: popups is " + driverSet.CountShowPopup +
+                       + _driver.Url + " OnClick: popups is " + driverSet.CountShowPopup +
                        " & count of windows " + _countWindowClick + "\nIn the testing process is NOT open our Landing" +
                        "\nPlease, repeat this test";
                    Console.Error.WriteLine(errorMessage + " " + _isOnClick);

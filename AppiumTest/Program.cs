@@ -10,12 +10,12 @@ namespace AppiumTest
     {
         static void Main(string[] args)
         {
-            //Console.Write("Windows score ");
-            //int WindowScore = int.Parse(Console.ReadLine());
-            //Console.Write("The duration of the show ");
-            //int TimeShow = 1000 * (int.Parse(Console.ReadLine()));
-            Console.WriteLine("Запуск теста...");
-            AppiumDriver driver = new AppiumDriver();
+            Console.WriteLine("Enter the type of test <onclick> or <pushup> or <interstitial>:");
+            Console.Write("$ ");
+            string TypeTest = Console.ReadLine();
+            AppiumDriver driver = new AppiumDriver(TypeTest);
+            Console.WriteLine("You have selected " + TypeTest);
+            Console.WriteLine("Test is running...");
             driver.Setup();
             driver.StartOnclick();
             Console.WriteLine("Тест выполнился!");
