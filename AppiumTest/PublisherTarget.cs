@@ -8,12 +8,13 @@ namespace AppiumTest
 {
     class PublisherTarget
     {
-        private string Url;
+        public string Url;
         public string ZoneId;
         public string TargetClick;
         public int CountShowPopup;
-        public int IntervalPopup;
+        public int Interval;
         public int StepCase;
+        public int FrameNumber;
         public List<PublisherTarget> DriverSetting;
 
         public List <PublisherTarget> GetDriverSettings(string typeTest)
@@ -22,28 +23,28 @@ namespace AppiumTest
             {
                 DriverSetting = new List<PublisherTarget>()
                    {
-                    new PublisherTarget() { Url = "http://putlocker.is", ZoneId = "10802", CountShowPopup = 3, IntervalPopup = 10000, StepCase = 0},
-                    new PublisherTarget() { Url = "http://thevideos.tv/", ZoneId = "90446", CountShowPopup = 3, IntervalPopup = 45000, TargetClick = "morevids", StepCase = 1},              
-                    new PublisherTarget() { Url = "http://www13.zippyshare.com/v/94311818/file.html/", ZoneId = "180376", CountShowPopup = 2, IntervalPopup = 45000, StepCase = 2},
-                    new PublisherTarget() { Url = "http://um-fabolous.blogspot.ru/", ZoneId = "199287", CountShowPopup = 3, IntervalPopup = 45000, StepCase = 3},                
-                    new PublisherTarget() { Url = "http://www.flashx.tv/&?", ZoneId = "119133", CountShowPopup = 1, IntervalPopup = 20000, StepCase = 4},              
+                    new PublisherTarget() { Url = "http://putlocker.is", ZoneId = "10802", CountShowPopup = 3, Interval = 10000, StepCase = 0},
+                    new PublisherTarget() { Url = "http://thevideos.tv/", ZoneId = "90446", CountShowPopup = 3, Interval = 45000, TargetClick = "morevids", StepCase = 1},              
+                    new PublisherTarget() { Url = "http://www13.zippyshare.com/v/94311818/file.html/", ZoneId = "180376", CountShowPopup = 2, Interval = 45000, StepCase = 2},
+                    new PublisherTarget() { Url = "http://um-fabolous.blogspot.ru/", ZoneId = "199287", CountShowPopup = 3, Interval = 45000, StepCase = 3},                
+                    new PublisherTarget() { Url = "http://www.flashx.tv/&?", ZoneId = "119133", CountShowPopup = 1, Interval = 20000, StepCase = 4},              
                     };
                 return DriverSetting;
-            } 
-            else
-                return null;
+            }
             if (typeTest == "pushup")
             {
                 DriverSetting = new List<PublisherTarget>()
                    {
-                    new PublisherTarget() { Url = "http://putlocker.is", ZoneId = "10802", CountShowPopup = 3, IntervalPopup = 10000, StepCase = 0},
-                    new PublisherTarget() { Url = "http://thevideos.tv/", ZoneId = "90446", CountShowPopup = 3, IntervalPopup = 45000, TargetClick = "morevids", StepCase = 1},              
-                    new PublisherTarget() { Url = "http://www13.zippyshare.com/v/94311818/file.html/", ZoneId = "180376", CountShowPopup = 2, IntervalPopup = 45000, StepCase = 2},
-                    new PublisherTarget() { Url = "http://um-fabolous.blogspot.ru/", ZoneId = "199287", CountShowPopup = 3, IntervalPopup = 45000, StepCase = 3},                
-                    new PublisherTarget() { Url = "http://www.flashx.tv/&?", ZoneId = "119133", CountShowPopup = 1, IntervalPopup = 20000, StepCase = 4},              
+                    new PublisherTarget() { Url = "http://putlocker.is", ZoneId = "15939", StepCase = 0, FrameNumber = 1, Interval = 5000},
+                    new PublisherTarget() { Url = "http://audiopoisk.com", ZoneId = "19926", StepCase = 1, FrameNumber = 2, Interval = 5000},              
+                    new PublisherTarget() { Url = "http://exbii.com", ZoneId = "37736", StepCase = 2, FrameNumber = 2, Interval = 5000},
+                    new PublisherTarget() { Url = "http://nontonmovie.com/", ZoneId = "124332", StepCase = 3, FrameNumber = 1, Interval = 5000},                
+                    new PublisherTarget() { Url = "http://um-fabolous.blogspot.ru/", ZoneId = "199624", StepCase = 4, FrameNumber = 3, Interval = 45000},              
                     };
                 return DriverSetting;
             }
+            else
+                return null;
         }
         
     }  
