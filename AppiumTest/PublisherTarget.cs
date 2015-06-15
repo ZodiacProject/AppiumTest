@@ -35,11 +35,13 @@ namespace AppiumTest
             {
                 DriverSetting = new List<PublisherTarget>()
                    {
-                    new PublisherTarget() { Url = "http://putlocker.is", ZoneId = "15939", StepCase = 0, FrameNumber = 1, Interval = 5000},
-                    new PublisherTarget() { Url = "http://audiopoisk.com", ZoneId = "19926", StepCase = 1, FrameNumber = 2, Interval = 5000},              
-                    new PublisherTarget() { Url = "http://exbii.com", ZoneId = "37736", StepCase = 2, FrameNumber = 2, Interval = 5000},
-                    new PublisherTarget() { Url = "http://nontonmovie.com/", ZoneId = "124332", StepCase = 3, FrameNumber = 1, Interval = 5000},                
-                    new PublisherTarget() { Url = "http://um-fabolous.blogspot.ru/", ZoneId = "199624", StepCase = 4, FrameNumber = 3, Interval = 45000},              
+                    new PublisherTarget() { Url = "http://putlocker.is", StepCase = 0, FrameNumber = 1, Interval = 5000},
+                    //new PublisherTarget() { Url = "http://audiopoisk.com", StepCase = 1, FrameNumber = 2, Interval = 5000},              
+                    //new PublisherTarget() { Url = "http://exbii.com", StepCase = 2, FrameNumber = 2, Interval = 5000},
+                    //new PublisherTarget() { Url = "http://nontonmovie.com/", StepCase = 3, FrameNumber = 1, Interval = 5000}, 
+                    //new PublisherTarget() { Url = "http://kickass.to/", StepCase = 4, FrameNumber = 1, Interval = 5000},      
+                    //new PublisherTarget() { Url = "http://www.solarmovie.is/", StepCase = 5, FrameNumber = 1, Interval = 5000},      
+                    //new PublisherTarget() { Url = "http://um-fabolous.blogspot.ru/", StepCase = 6, FrameNumber = 3, Interval = 15000},              
                     };
                 return DriverSetting;
             }

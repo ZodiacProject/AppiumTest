@@ -29,13 +29,15 @@ namespace AppiumTest
       private bool _isLandChecked;
       private bool _isAction;
       private int _countWindowClick = 0;
+      private TestRail _testRun;
 
       public List<AndroidDriver> Drivers { get; private set; }
       private string _typeTest; 
     
 //Constuctor
-       public AppiumDriver(string TypeTest)
+       public AppiumDriver(string TypeTest, TestRail test)
         {
+            _testRun = test;
 			Drivers = new List<AndroidDriver>();
             _publisher = new PublisherTarget();
             _driverSettings = _publisher.GetDriverSettings(_typeTest = TypeTest);
@@ -63,11 +65,11 @@ namespace AppiumTest
       public void StartOnclick()
        {
            //ITouchAction tapScreen = new TouchAction(driver);
-           TestRail TestRun = new TestRail();
-           TestRun.StartTestRail();
+           //StartPushupTestRail TestRun = new TestRail();
+           _testRun.StartTestRail();
            List<string> CaseToRun = new List<string>();
 
-           foreach (string runCase in TestRun.GetRunCase(_driver))
+           foreach (string runCase in _testRun.GetRunCase(_driver))
                CaseToRun.Add(runCase);
 
            //foreach (string c in CaseToRun)
@@ -120,7 +122,7 @@ namespace AppiumTest
                            Thread.Sleep(1000);
                        }
                    }
-                   catch { Console.WriteLine("Pushup been on site"); }
+                   catch {}
 
                    _driver.SwitchTo().Window(_driver.WindowHandles.ElementAt(0)).SwitchTo().ActiveElement().Click();
                    Thread.Sleep(3000);
@@ -136,7 +138,7 @@ namespace AppiumTest
                            errorMessage = "Во время клика не отработал показ. На сайте присутствует наш Network";
                            commentMessage = "OnClick не отработал";
                            Console.Error.WriteLine(_driver.SwitchTo().Window(baseWindow).Url + " OnClick is " + _isAction);
-                           TestRun.SetStatus(CaseToRun[driverSet.StepCase], 5, errorMessage, commentMessage);
+                           _testRun.SetStatus(CaseToRun[driverSet.StepCase], 5, errorMessage, commentMessage);
                            break;
                        }
                    }
@@ -145,7 +147,7 @@ namespace AppiumTest
                        errorMessage = "FailedLand: " + failedLand + "\nLanding is " + _isLandChecked;
                        commentMessage = "Landing is " + _isLandChecked;
                        Console.Error.WriteLine(_driver.SwitchTo().Window(baseWindow).Url + errorMessage);
-                       TestRun.SetStatus(CaseToRun[driverSet.StepCase], 5, errorMessage, commentMessage);
+                       _testRun.SetStatus(CaseToRun[driverSet.StepCase], 5, errorMessage, commentMessage);
                        break;
                    }
 
@@ -162,7 +164,7 @@ namespace AppiumTest
                {
                    successMessage = _driver.Url + "\nLanding is - " + _isLandChecked;
                    Console.WriteLine(successMessage + " " + _isLandChecked + " " + _isAction);
-                   TestRun.SetStatus(CaseToRun[driverSet.StepCase], 1, successMessage, null);
+                   _testRun.SetStatus(CaseToRun[driverSet.StepCase], 1, successMessage, null);
                }
 
                else if (_isLandChecked && _isAction)
@@ -173,18 +175,17 @@ namespace AppiumTest
                        "\nPlease, repeat this test";
                    Console.Error.WriteLine(errorMessage + " " + _isAction);
 
-                   TestRun.SetStatus(CaseToRun[driverSet.StepCase], 4, retestMessage, null);
+                   _testRun.SetStatus(CaseToRun[driverSet.StepCase], 4, retestMessage, null);
                }
 
            }//end foreach
        }
       public void StartPushup()
        {
-           TestRail TestRun = new TestRail();
-           TestRun.StartTestRail();
+           _testRun.StartTestRail();
            List<string> CaseToRun = new List<string>();
 
-           foreach (string runCase in TestRun.GetRunCase(_driver))
+           foreach (string runCase in _testRun.GetRunCase(_driver))
                CaseToRun.Add(runCase);
 
            //foreach (string c in CaseToRun)
@@ -198,10 +199,7 @@ namespace AppiumTest
                _driver.Navigate().GoToUrl(driverSet.Url);
                    Thread.Sleep(driverSet.Interval);
                    string baseWindow = _driver.CurrentWindowHandle;
-                   if (_driver.PageSource.Contains(driverSet.ZoneId))
-                       _isLandChecked = true;
-                   else
-                       _isLandChecked = false;
+                   
                        if (PushupProcess(_driver, driverSet.FrameNumber))
                        { 
                            _isAction = true;                          
@@ -210,9 +208,8 @@ namespace AppiumTest
                        {                   
                             _isAction = false; 
                             Console.WriteLine("Pushup is not on site");
-                            errorMessage = "Pushup is not on site";
                        }
-                   Thread.Sleep(3000);
+                   Thread.Sleep(2000);
                    try
                    {
                        foreach (string handle in _driver.WindowHandles)
@@ -226,34 +223,26 @@ namespace AppiumTest
                                }
                            }
                        }
-                      _driver.SwitchTo().Window(_driver.WindowHandles.ElementAt(0));
-                   }
-                   catch (Exception e) { Console.WriteLine(e); }
-                   if (_isLandChecked)
-                   {
+                       _driver.SwitchTo().Window(_driver.WindowHandles.ElementAt(0));
+
+
+
                        if (!_isAction)
                        {
                            errorMessage = "На сайте присутствует файл notice.php ";
                            commentMessage = "Pushup не отработал. " + errorMessage;
-                           Console.Error.WriteLine(_driver.SwitchTo().Window(baseWindow).Url + "  [Error] Pushup is " + _isAction);
-                           TestRun.SetStatus(CaseToRun[driverSet.StepCase], 5, errorMessage, commentMessage);
+                           Console.Error.WriteLine("[Error] " + _driver.SwitchTo().Window(baseWindow).Url + "  Pushup is " + _isAction);
+                           _testRun.SetStatus(CaseToRun[driverSet.StepCase], 5, errorMessage, commentMessage);
                        }
                        else
                        {
                            successMessage = driverSet.Url + "  Pushup is true";
                            commentMessage = "Pushup worked";
                            Console.WriteLine(successMessage);
-                           TestRun.SetStatus(CaseToRun[driverSet.StepCase], 1, successMessage, commentMessage);
+                           _testRun.SetStatus(CaseToRun[driverSet.StepCase], 1, successMessage, commentMessage);
                        }
                    }
-                   else
-                   {
-                       errorMessage = "  [Error] FailedLand: Landing is " + _isLandChecked;
-                       commentMessage = "Landing is " + _isLandChecked;
-                       Console.Error.WriteLine(_driver.SwitchTo().Window(baseWindow).Url + errorMessage);
-                       TestRun.SetStatus(CaseToRun[driverSet.StepCase], 5, errorMessage, commentMessage);
-                   }
-
+                   catch { } 
            }//end of foreach
        }
 private bool PushupProcess(AndroidDriver driver, int frameNumber)
@@ -261,7 +250,13 @@ private bool PushupProcess(AndroidDriver driver, int frameNumber)
          bool isIframe = false;
          try
          {
+             //* crutch
+             if (driver.Url == "http://um-fabolous.blogspot.ru/")
+                 driver.SwitchTo().Frame(driver.FindElementByXPath("/html/body/iframe[3]"));
+             //* crutch
+             else
              driver.SwitchTo().Frame(driver.FindElementByXPath("/html/body/iframe[" + frameNumber + "]"));
+
              isIframe = driver.PageSource.Contains("OK");
              driver.FindElementByXPath("//*[@id='B2']").Click();
          }
@@ -270,12 +265,12 @@ private bool PushupProcess(AndroidDriver driver, int frameNumber)
     }
 private void OnclickProcess(AndroidDriver driver, PublisherTarget d_setting)
 {
-    if ((_countWindowClick = driver.WindowHandles.Count) > 1)
+    try
     {
-        _isAction = true;
-        Thread.Sleep(2000);
-        try
+        if ((_countWindowClick = driver.WindowHandles.Count) > 1)
         {
+            _isAction = true;
+            Thread.Sleep(2000);
             foreach (string handle in driver.WindowHandles)
             {
                 if (handle != driver.WindowHandles.ElementAt(0))//(driver.SwitchTo().Window(handle).Url != driver.SwitchTo().Window(baseWindow).Url)
@@ -287,12 +282,14 @@ private void OnclickProcess(AndroidDriver driver, PublisherTarget d_setting)
                     }
                 }
             }
-        }
-        catch (Exception e) { Console.WriteLine(e); }
-    }
 
-    d_setting.CountShowPopup--;
-    driver.SwitchTo().Window(driver.WindowHandles.ElementAt(0));
+        }
+
+        d_setting.CountShowPopup--;
+        driver.SwitchTo().Window(driver.WindowHandles.ElementAt(0));
+    }
+    catch { }
+
     // time Interval popup
     Thread.Sleep(d_setting.Interval);
 }

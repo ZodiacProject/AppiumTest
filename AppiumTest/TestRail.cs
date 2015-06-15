@@ -20,28 +20,23 @@ using OpenQA.Selenium.Internal;
 
 namespace AppiumTest
 {
-    class TestRail
+    public class TestRail
     {
         private APIClient client = new APIClient("https://propeller.testrail.net");
         private const string _login = "stepanov.guap@gmail.com";
         private const string _password = "302bis";
         private List<string> _createCases = new List<string>();
-        private string _runID = "";
-        private int _suiteId = 65;
+        private string _runID = null;
         private int _numberCase;
+        private int _suiteId;
+        private string _alreadyRun = "";
+        public string RunID {set { _runID = value; } }
+        public int GetSuiteID { get { return _suiteId; } set { _suiteId = value; } }
+
         private Dictionary<string, List<string>> _testRun;
-        public Status status;
-        public enum Status
-        {
-            Untestead,
-            Passed,
-            Blocked,
-            Critical,
-            Implementated,
-            Failed
-        };
         public void StartTestRail()
         {
+            int created_on = 0;
             client.User = _login;
             client.Password = _password;
             _testRun = new Dictionary<string, List<string>>();
@@ -51,11 +46,17 @@ namespace AppiumTest
             //    Console.WriteLine(s.ToString());
             //}
             JArray Runs = (JArray)client.SendGet("get_runs/3&suite_id=" + _suiteId);
-
-            foreach (var run in Runs)
+            if (String.IsNullOrEmpty(_runID))
             {
-                if (Convert.ToBoolean(run["is_completed"]) == false)
-                    _runID = run["id"].ToString();
+                foreach (var run in Runs)
+                {
+                    if (Convert.ToBoolean(run["is_completed"]) == false)
+                        if (Convert.ToInt32(run["created_on"]) > created_on)
+                        {
+                            created_on = Convert.ToInt32(run["created_on"]);
+                            _runID = run["id"].ToString();
+                        }
+                }
             }
             JArray TestCases = (JArray)client.SendGet("get_tests/" + _runID);
             _numberCase = TestCases.Count / Sections.Count;
@@ -84,25 +85,27 @@ namespace AppiumTest
             //Console.WriteLine("name = {0}, id = {1}", testrun.Key, value);
         }
 
-        public void CreateRun(int suiteId, string nameSuite)
+        public void CreateRun(string nameSuite)
         {
-            client.User = _login;
-            client.Password = _password;
-            _suiteId = suiteId;
-            JArray caseData = (JArray)client.SendGet("get_cases/3/&suite_id=" + _suiteId);
-            foreach (var c in caseData)
-                _createCases.Add(c["id"].ToString());
-            var runData = new Dictionary<string, object>
-            {
+                client.User = _login;
+                client.Password = _password;
+                JArray caseData = (JArray)client.SendGet("get_cases/3/&suite_id=" + _suiteId);
+                foreach (var c in caseData)
+                    _createCases.Add(c["id"].ToString());
+                var runData = new Dictionary<string, object>
+                {
                     {"suite_id", _suiteId},
                     {"name", nameSuite},
                     {"include_all", true},
-                    {"description", "Автоматическое тестирование Desktop OnClick для браузеров: Chrome, FireFox, Opera, IE, Safari"},
+                    {"description", "Автоматическое тестирование OnClick/Pushup для мобильных браузеров: Chrome, FireFox, Opera, IE, Safari"},
                     {"case_ids", _createCases.ToArray()},
-            };
+                };
 
-            JObject runCreate = (JObject)client.SendPost("add_run/3", runData);
-            Console.WriteLine("Test run is create.");
+                JObject runCreate = (JObject)client.SendPost("add_run/3", runData);
+                Console.WriteLine("Test run is create.");
+                Console.WriteLine("Test is running...");
+                _alreadyRun = runCreate["id"].ToString();
+      
         }
 
 
@@ -153,6 +156,18 @@ namespace AppiumTest
                 Console.WriteLine(e);
             }
         }
+        public void GetRunsProject()
+        {
+            Console.WriteLine("Актуальные проекты:");
+            client.User = _login;
+            client.Password = _password;
+               JArray Runs = (JArray)client.SendGet("get_runs/3");
+            foreach (var run in Runs)
+            {
+                if (Convert.ToBoolean(run["is_completed"]) == false)
+                    Console.WriteLine("ID:" + run["id"].ToString() + "\tName:" + run["name"]);
+            }
+        }
         public void GetSuitesOfProject()
         {
             client.User = _login;
@@ -160,7 +175,8 @@ namespace AppiumTest
             JArray SuiteData = (JArray)client.SendGet("get_suites/3");
             Console.WriteLine("ID\tName");
             foreach (var suite in SuiteData)
-                Console.WriteLine(" " + suite["id"] + "\t" + suite["name"]);
+               // if (!suite["name"].ToString().Contains("Desktop"))
+                    Console.WriteLine(" " + suite["id"] + "\t" + suite["name"]);
         }
     }
 
